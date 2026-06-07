@@ -1,0 +1,16 @@
+# Docker database data
+pg_data/
+
+# Large GIS files (GitHub rejects files > 100MB)
+*.tif
+*.tiff
+*.png
+*.jpg
+*.jpeg
+*.pgw
+*.tfw
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

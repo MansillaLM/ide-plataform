@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: ide-db
+    environment:
+      - POSTGRES_DB=idedb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - .:/data
+    restart: unless-stopped
+
+  tileserv:
+    image: pramsey/pg_tileserv:latest
+    container_name: ide-tileserv
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db/idedb
+    ports:
+      - "7800:7800"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.24.1
+    container_name: ide-geoserver
+    ports:
+      - "8082:8080"
+    volumes:
+      - .:/data
+    environment:
+      - GEOSERVER_ADMIN_PASSWORD=geoserver
+      - CORS_ENABLED=true
+      - CORS_ALLOWED_ORIGINS=*
+      - CORS_ALLOWED_METHODS=GET,POST,PUT,DELETE,HEAD,OPTIONS
+      - CORS_ALLOWED_HEADERS=Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization
+    restart: unless-stopped
+
+  web:
+    image: nginx:alpine
+    container_name: ide-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    restart: unless-stopped
+
+volumes:
+  pg_data:

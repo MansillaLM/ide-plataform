@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDE - Infraestructura de Datos Espaciales</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- MapLibre GL JS -->
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar Panel -->
+        <aside id="sidebar">
+            <header class="sidebar-header">
+                <div class="logo-area">
+                    <span class="logo-icon">🗺️</span>
+                    <div>
+                        <h1>IDE Local</h1>
+                        <p class="subtitle">Plataforma Territorial</p>
+                    </div>
+                </div>
+            </header>
+
+            <div class="sidebar-content">
+                <!-- Capas Section -->
+                <section class="panel-section">
+                    <h2>Capas Disponibles</h2>
+                    <div class="layer-list">
+                        <!-- Raster Layer Control -->
+                        <div class="layer-item">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="layer-raster" checked>
+                                <span class="checkmark"></span>
+                                <span class="layer-label">Mosaico Aéreo (Vuelo Sector)</span>
+                            </label>
+                            <div class="layer-controls">
+                                <span class="control-label">Opacidad</span>
+                                <input type="range" id="opacity-raster" min="0" max="100" value="85" class="slider">
+                                <span id="opacity-val-raster" class="badge">85%</span>
+                            </div>
+                        </div>
+
+                        <!-- Vector Layer Control -->
+                        <div class="layer-item">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="layer-vector" checked>
+                                <span class="checkmark"></span>
+                                <span class="layer-label">Vectores (shp_wgs)</span>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Info Panel Section -->
+                <section class="panel-section" id="info-section">
+                    <h2>Información del Elemento</h2>
+                    <div id="info-placeholder" class="info-content active">
+                        <p class="empty-state">Haz clic en un elemento del vector en el mapa para ver sus detalles aquí.</p>
+                    </div>
+                    <div id="info-details" class="info-content">
+                        <!-- Dynamic properties table will go here -->
+                        <table id="attributes-table">
+                            <thead>
+                                <tr>
+                                    <th>Atributo</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attributes-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="sidebar-footer">
+                <p>PostgreSQL / PostGIS + TiTiler + pg_tileserv</p>
+            </footer>
+        </aside>
+
+        <!-- Map Container -->
+        <main id="map-container">
+            <div id="map"></div>
+            
+            <!-- Coordinates Bar -->
+            <div id="coordinates-bar" class="map-overlay">
+                <span>Lat: <strong id="lat-display">-</strong></span>
+                <span>Lng: <strong id="lng-display">-</strong></span>
+                <span>Zoom: <strong id="zoom-display">-</strong></span>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div id="loader" class="map-overlay">
+                <div class="spinner"></div>
+                <span>Cargando datos espaciales...</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Local App JS -->
+    <script src="app.js"></script>
+</body>
+</html>
