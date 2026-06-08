@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error('Error fetching cambios.geojson:', err);
-                alert('Aviso: cambios.geojson no encontrado localmente. El análisis espacial estará inactivo hasta que se genere.');
+                alert('Aviso: cambios.geojson no encontrado localmente. Detalle del error: ' + err.message);
             });
     });
 
