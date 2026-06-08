@@ -25,11 +25,11 @@ FROM (
 ) features;
 "@
 
-# Run query inside container and output to local file
-docker exec -i ide-db psql -U postgres -d idedb -t -A -c "$query" > frontend/cambios.geojson
+# Run query inside container and output directly to /data/frontend/cambios.geojson to avoid PowerShell UTF-16LE redirection bug
+docker exec -i ide-db psql -U postgres -d idedb -t -A -c "$query" -o /data/frontend/cambios.geojson
 
 if ($LASTEXITCODE -eq 0 -and (Test-Path frontend/cambios.geojson)) {
-    Write-Host "GeoJSON successfully exported to frontend/cambios.geojson!"
+    Write-Host "GeoJSON successfully exported in UTF-8 to frontend/cambios.geojson!"
 } else {
     Write-Error "Failed to export GeoJSON."
 }
