@@ -14,6 +14,20 @@
     <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
     
+    <!-- Mapbox GL Draw (Compatible with MapLibre) -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css" type="text/css" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js"></script>
+    
+    <!-- Turf.js for Spatial Calculations -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
+    <!-- html2pdf.js for PDF Reports -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- MapLibre GL Geocoder for address search -->
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-geocoder@1.5.0/dist/maplibre-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@maplibre/maplibre-gl-geocoder@1.5.0/dist/maplibre-gl-geocoder.css" type="text/css" />
+
     <!-- Local CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -26,7 +40,7 @@
                     <span class="logo-icon">🗺️</span>
                     <div>
                         <h1>IDE Local</h1>
-                        <p class="subtitle">Plataforma Territorial</p>
+                        <p class="subtitle">Monitoreo Morfológico</p>
                     </div>
                 </div>
             </header>
@@ -55,9 +69,28 @@
                             <label class="checkbox-container">
                                 <input type="checkbox" id="layer-vector" checked>
                                 <span class="checkmark"></span>
-                                <span class="layer-label">Vectores (shp_wgs)</span>
+                                <span class="layer-label">Cambios Edilicios (shp)</span>
                             </label>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Stats Section -->
+                <section class="panel-section" id="stats-section">
+                    <h2>Estadísticas del Área</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-val" id="val-conteo">0</span>
+                            <span class="stat-label">Edificaciones Afectadas</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-val" id="val-area-cambios">0</span>
+                            <span class="stat-label">Área Edificada Nueva (m²)</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="btn-exportar" class="btn btn-primary" disabled>Exportar Informe PDF</button>
+                        <button id="btn-reiniciar" class="btn btn-secondary">Reiniciar Análisis</button>
                     </div>
                 </section>
 
@@ -65,10 +98,9 @@
                 <section class="panel-section" id="info-section">
                     <h2>Información del Elemento</h2>
                     <div id="info-placeholder" class="info-content active">
-                        <p class="empty-state">Haz clic en un elemento del vector en el mapa para ver sus detalles aquí.</p>
+                        <p class="empty-state">Dibuja un polígono o haz clic en un elemento para ver detalles.</p>
                     </div>
                     <div id="info-details" class="info-content">
-                        <!-- Dynamic properties table will go here -->
                         <table id="attributes-table">
                             <thead>
                                 <tr>
@@ -83,12 +115,13 @@
             </div>
 
             <footer class="sidebar-footer">
-                <p>PostgreSQL / PostGIS + TiTiler + pg_tileserv</p>
+                <p>PostgreSQL / PostGIS + GeoServer + pg_tileserv</p>
             </footer>
         </aside>
 
         <!-- Map Container -->
         <main id="map-container">
+            <!-- MapDiv -->
             <div id="map"></div>
             
             <!-- Coordinates Bar -->
